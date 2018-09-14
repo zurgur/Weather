@@ -1,0 +1,41 @@
+<form action="/api" method="POST">
+    {% csrf_token %}
+    {{ form.city1.errors }}
+    <label for="{{ form.city1.id_for_label }}">City one:</label>
+    {{ form.city1 }}
+
+    {{ form.city2.errors }}
+    <label for="{{ form.city2.id_for_label }}">City two:</label>
+    {{ form.city2 }}
+    <button type="submit" value="OK">Show Weather</button>
+</form>
+
+{% if city1 and city2 %}
+<table class="pure-table">
+    <tr>
+        <th>City</th>
+        <th>Description</th>
+        <th>Temperature</th>
+        <th>Humidity</th>
+        <th>Sunrise</th>
+        <th>Sunset</th>
+    </tr>
+    
+    <tr>
+        <td>{{ city1.name }} ({{ city1.sys.country }})</td>
+        <td>{{ city1.weather.0.description }}</td>
+        <td>{{ city1.main.temp }} °C</td>
+        <td>{{ city1.main.humidity }}</td>
+        <td>{{ city1.sys.sunrise }}</td>
+        <td>{{ city1.sys.sunset }}</td>
+    </tr> 
+    <tr>
+            <td>{{ city2.name }} ({{ city2.sys.country }})</td>
+            <td>{{ city2.weather.0.description }}</td>
+            <td>{{ city2.main.temp }} °C</td>
+            <td>{{ city2.main.humidity }}</td>
+            <td>{{ city2.sys.sunrise }}</td>
+            <td>{{ city2.sys.sunset }}</td>
+        </tr> 
+</table>
+{% endif %}
