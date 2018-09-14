@@ -1,0 +1,6 @@
+<form action="/login" method="POST">
+    {% csrf_token %}
+
+    {{ form }}
+    <button type="submit" value="OK">sign up</button>
+</form>
