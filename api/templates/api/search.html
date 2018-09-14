@@ -39,3 +39,9 @@
         </tr> 
 </table>
 {% endif %}
+{% if request.user.is_authenticated %}
+    <p>loged inn as: {{ request.user.username }}</p>
+    <a href="/login/logout">log out</a>
+{% else %}
+    <a href="/login">log inn</a>
+{% endif%}

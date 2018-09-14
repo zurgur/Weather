@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
 from .forms import UserForm, ProfileForm
 
@@ -35,5 +35,10 @@ class userFormView(View):
                 return redirect('/')
                 
         return render(request, self.template_name, {'user_form': userForm, 'profile_form': profileForm})
+
+    
+def logout_view(request):
+    logout(request)
+    return redirect('/')
 
 
