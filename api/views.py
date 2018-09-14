@@ -1,9 +1,9 @@
 from django.shortcuts import render, HttpResponse
-from django.template import loader
-from django.views.generic.edit import CreateView
 from .form import CityForm
 
-from pprint import pprint as pp
+from .models import Logs
+from django.utils import timezone
+
 # Create your views here.
 import requests
 
@@ -19,7 +19,8 @@ def home(request):
         if form.is_valid():
             city1 = query_api(form['city1'].value())
             city2 = query_api(form['city2'].value())
-            print(city1['weather'][0]['description'])
+            l = Logs(city1=form['city1'].value(), city2=form['city2'].value())
+            l.save()
             return render(request, 'api/search.html', {'form': form, 'city1': city1, 'city2': city2})
 
     else:
