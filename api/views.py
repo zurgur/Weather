@@ -5,10 +5,12 @@ from django.views.generic import View
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.mail import send_mail
+import time
+from background_task import background
 
 from .models import Logs
 from django.utils import timezone
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 
 # Create your views here.
@@ -88,6 +90,7 @@ def get_local_time(utstamp, country, city):
     dt = utc_dt.astimezone(loc_tz)
     return dt.strftime(TIME_FMT)
 
+@background(schedule=timedelta(minutes=1440))
 def sendEmails():
     users = User.objects.all()
     apiCalls = {}
@@ -100,6 +103,7 @@ def sendEmails():
             message = ' todays weather in ' + user.profile.location + ' is ' + apiCalls[user.profile.location]['weather'][0]['description']
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [user.email,]
+            print('sending email ....' + message)
             send_mail( subject, message, email_from, recipient_list )
     return
 

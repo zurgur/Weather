@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "api.apps.ApiConfig",
     "login.apps.LoginConfig",
-    "djcelery",
+    "background_task",
 ]
 
 MIDDLEWARE = [
