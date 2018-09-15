@@ -1,8 +1,23 @@
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'api/style.css' %}">
-<h1>Get historic Weather info</h1>
-<form action="/history" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" value="OK">Show Weather</button>
-</form>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Experiment with Bokeh</title>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'api/style.css' %}">
+
+</head>
+<body>
+    <h1>Search for historic data</h1>
+    <form action="/history" method="POST">
+        {{ form }}
+    </form>
+
+    {{ div|safe }}
+
+    {{ script|safe }}
+</body>
+</html> 

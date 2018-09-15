@@ -27,6 +27,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# bokeh stuff
+
+os.environ["BOKEH_SECRET_KEY"] = "QXir9qJlSNhDNHRafalMTIvrvb2MQ6cGKtwzQozlMcMi"
+os.environ["BOKEH_SIGN_SESSIONS"] = "True"
+
+
 # email stuff
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
