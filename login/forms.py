@@ -14,3 +14,11 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['location']
+
+class LoginnForm(forms.ModelForm):
+
+    password = forms.CharField(widget=forms.PasswordInput)
+    
+    class Meta:
+        model = User
+        fields = ['username','password']

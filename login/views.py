@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
-from .forms import UserForm, ProfileForm
+from .forms import UserForm, ProfileForm, LoginnForm
 
 
-class userFormView(View):
+class UserFormView(View):
     user_form = UserForm
     profile_form = ProfileForm
 
@@ -17,18 +17,12 @@ class userFormView(View):
 
     # prosses form data
     def post(self, request):
-        userForm =self.user_form(request.POST, instance=request.user)
-        profileForm = self.profile_form(request.POST, instance=request.user.profile)
-        if userForm.is_valid() and profileForm.is_valid():
-            user = userForm.save(commit=False)
-
-            username = userForm.cleaned_data['username']
-            password = userForm.cleaned_data['password']
-            user.set_password(password)
+        userForm =self.user_form(request.POST)
+        if userForm.is_valid():
+            user = userForm.save()
             user.save()
+            profileForm = ProfileForm(request.POST, instance=user.profile)
             profileForm.save()
-
-            user = authenticate(username=username, password=password)
 
             if user is not None and user.is_active:
                 login (request, user)
@@ -36,8 +30,26 @@ class userFormView(View):
                 
         return render(request, self.template_name, {'user_form': userForm, 'profile_form': profileForm})
 
+class LoginView(View):
+    form = LoginnForm
+    template_name = 'login/login_form.html'
+    def get(self, request):
+        form =self.form(None)
+        return render(request, self.template_name, { 'form': form })
+    def post(self, request):
+        form =self.form(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)            
+            if user is not None and user.is_active:
+                login(request, user)
+                return redirect('/')
+
+        return render(request, self.template_name, { 'form': form })
+
     
-def logout_view(request):
+def logoutView(request):
     logout(request)
     return redirect('/')
 

@@ -30,18 +30,18 @@
         <td>{{ city1.sys.sunset }}</td>
     </tr> 
     <tr>
-            <td>{{ city2.name }} ({{ city2.sys.country }})</td>
-            <td>{{ city2.weather.0.description }}</td>
-            <td>{{ city2.main.temp }} °C</td>
-            <td>{{ city2.main.humidity }}</td>
-            <td>{{ city2.sys.sunrise }}</td>
-            <td>{{ city2.sys.sunset }}</td>
-        </tr> 
+        <td>{{ city2.name }} ({{ city2.sys.country }})</td>
+        <td>{{ city2.weather.0.description }}</td>
+        <td>{{ city2.main.temp }} °C</td>
+        <td>{{ city2.main.humidity }}</td>
+        <td>{{ city2.sys.sunrise }}</td>
+        <td>{{ city2.sys.sunset }}</td>
+    </tr> 
 </table>
 {% endif %}
 {% if request.user.is_authenticated %}
     <p>loged inn as: {{ request.user.username }}</p>
-    <a href="/login/logout">log out</a>
+    <a href="/logout">log out</a>
 {% else %}
     <a href="/login">log inn</a>
 {% endif%}
