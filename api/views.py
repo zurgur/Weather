@@ -2,6 +2,9 @@ from django.shortcuts import render, HttpResponse
 from .form import CityForm, SearchForm
 from django.views.generic import View
 
+from django.contrib.auth.models import User
+from django.conf import settings
+from django.core.mail import send_mail
 
 from .models import Logs
 from django.utils import timezone
@@ -68,6 +71,7 @@ def query_api(city):
     return data
 
 def get_local_time(utstamp, country, city):
+
     utc_dt = datetime.utcfromtimestamp(int(utstamp)).replace(tzinfo=pytz.utc)
 
     timezones = pytz.country_timezones.get(country.upper(), [])
@@ -83,3 +87,19 @@ def get_local_time(utstamp, country, city):
     loc_tz = pytz.timezone(tz)
     dt = utc_dt.astimezone(loc_tz)
     return dt.strftime(TIME_FMT)
+
+def sendEmails():
+    users = User.objects.all()
+    apiCalls = {}
+    for user in users:
+        if(user.profile.location != ''):
+            if user.profile.location not in apiCalls:
+                apiCalls[user.profile.location] = query_api(user.profile.location)
+            
+            subject = 'Todays weather'
+            message = ' todays weather in ' + user.profile.location + ' is ' + apiCalls[user.profile.location]['weather'][0]['description']
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [user.email,]
+            send_mail( subject, message, email_from, recipient_list )
+    return
+

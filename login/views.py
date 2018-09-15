@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
 from .forms import UserForm, ProfileForm, LoginnForm
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 class UserFormView(View):
@@ -27,6 +29,7 @@ class UserFormView(View):
 
             if user is not None and user.is_active:
                 login (request, user)
+                email(userForm.cleaned_data['email'])
                 return redirect('/')
                 
         return render(request, self.template_name, {'user_form': userForm, 'profile_form': profileForm})
@@ -64,4 +67,14 @@ class LoginView(View):
 def logoutView(request):
     logout(request)
     return redirect('/')
+
+def email(userEmail):
+
+    subject = 'Thank you for registering to weather app'
+    message = ' it  means a world to us '
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [userEmail,]
+
+    send_mail( subject, message, email_from, recipient_list )
+    return
 

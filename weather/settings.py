@@ -27,6 +27,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# email stuff
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'WeatherDjangoApp@gmail.com'
+EMAIL_HOST_PASSWORD = 'esjan12345'
+
 
 # Application definition
 
@@ -39,7 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "api.apps.ApiConfig",
     "login.apps.LoginConfig",
-    
+    "djcelery",
 ]
 
 MIDDLEWARE = [
