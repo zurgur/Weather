@@ -1,3 +1,6 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'api/style.css' %}">
+<h1>Compare the Weather of two citys</h1>
 <form action="/" method="POST">
     {% csrf_token %}
     {{ form.city1.errors }}
@@ -39,9 +42,15 @@
     </tr> 
 </table>
 {% endif %}
+<hr>
 {% if request.user.is_authenticated %}
-    <p>loged inn as: {{ request.user.username }}</p>
-    <a href="/logout">log out</a>
+    <div class="signin">
+        <p>loged inn as: {{ request.user.username }}</p>
+        <a href="/logout">log out</a>
+    </div>
 {% else %}
-    <a href="/login">log inn</a>
+    <div class="signin">
+        <p>login for daily updates</p>
+        <a href="/login">login</a>
+    </div>
 {% endif%}
