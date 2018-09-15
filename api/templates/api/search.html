@@ -46,6 +46,7 @@
 {% if request.user.is_authenticated %}
     <div class="signin">
         <p>loged inn as: {{ request.user.username }}</p>
+        <p>The weather outside({{ userWeather.name }}) is: {{ userWeather.weather.0.description }}</p>
         <a href="/logout">log out</a>
     </div>
 {% else %}

@@ -13,33 +13,36 @@ import requests
 
 API_URL = ("http://api.openweathermap.org/data/2.5/weather?"
 "q={}&mode=json&units=metric&appid={}")
-API_HISTORY = ("http://history.openweathermap.org/data/2.5/history/city?q={}&mode=json&units=metric&appid={}")
 DEFAULT_TIME = 'Europe/Madrid'
 TIME_FMT = '%H:%M:%S %Z%z'
 
 def home(request):
     city1 = False
     city2 = False
+    userWeather = []
+    if request.user.is_authenticated:
+        if request.user.profile.location is not None:
+            userWeather = query_api(request.user.profile.location)
     if request.method == 'POST':
         form = CityForm(request.POST)
         
         if form.is_valid():
             city1 = query_api(form['city1'].value())
             city2 = query_api(form['city2'].value())
-            print(city1)
             l = Logs(city1=form['city1'].value(), city2=form['city2'].value())
             l.save()
-            print(get_local_time( city2['sys']['sunset'] , city2['sys']['country'], city2['name']))
             return render(request, 'api/search.html', {'form': form, 'city1': city1, 'city2': city2,
             'sunrise1': get_local_time( city1['sys']['sunrise'] , city1['sys']['country'], city1['name']),
             'sunset1': get_local_time( city1['sys']['sunset'] , city1['sys']['country'], city1['name']),
             'sunrise2': get_local_time( city2['sys']['sunrise'] , city2['sys']['country'], city2['name']),
-            'sunset2': get_local_time( city2['sys']['sunset'] , city2['sys']['country'], city2['name'])})
+            'sunset2': get_local_time( city2['sys']['sunset'] , city2['sys']['country'], city2['name']),
+            'userWeather': userWeather
+            })
 
     else:
         form = CityForm()
 
-    return render(request, 'api/search.html', {'form': form})
+    return render(request, 'api/search.html', {'form': form, 'userWeather': userWeather})
     
 class HistoryView(View):
     form = SearchForm
