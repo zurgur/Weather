@@ -1,5 +1,7 @@
 from django.shortcuts import render, HttpResponse
-from .form import CityForm
+from .form import CityForm, SearchForm
+from django.views.generic import View
+
 
 from .models import Logs
 from django.utils import timezone
@@ -11,6 +13,7 @@ import requests
 
 API_URL = ("http://api.openweathermap.org/data/2.5/weather?"
 "q={}&mode=json&units=metric&appid={}")
+API_HISTORY = ("http://history.openweathermap.org/data/2.5/history/city?q={}&mode=json&units=metric&appid={}")
 DEFAULT_TIME = 'Europe/Madrid'
 TIME_FMT = '%H:%M:%S %Z%z'
 
@@ -23,6 +26,7 @@ def home(request):
         if form.is_valid():
             city1 = query_api(form['city1'].value())
             city2 = query_api(form['city2'].value())
+            print(city1)
             l = Logs(city1=form['city1'].value(), city2=form['city2'].value())
             l.save()
             print(get_local_time( city2['sys']['sunset'] , city2['sys']['country'], city2['name']))
@@ -37,6 +41,20 @@ def home(request):
 
     return render(request, 'api/search.html', {'form': form})
     
+class HistoryView(View):
+    form = SearchForm
+    template_name = 'api/history.html'
+    def get(self, request):
+        form =self.form(None)
+        return render(request, self.template_name, { 'form': form })
+
+    def post(self, request):
+        form = self.form(request.POST)
+
+        if form.is_valid():
+            pass
+
+        return render(request, self.template_name,{'form': form})
 
 def query_api(city):
     try:

@@ -20,6 +20,7 @@ class UserFormView(View):
         userForm =self.user_form(request.POST)
         if userForm.is_valid():
             user = userForm.save()
+            user.set_password(userForm.cleaned_data['password'])
             user.save()
             profileForm = ProfileForm(request.POST, instance=user.profile)
             profileForm.save()
@@ -36,21 +37,31 @@ class LoginView(View):
     def get(self, request):
         form =self.form(None)
         return render(request, self.template_name, { 'form': form })
+
     def post(self, request):
-        form =self.form(request.POST)
+        form = self.form(request.POST)
+
         if form.is_valid():
+
+
+            #cleaned (normalized) data
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)            
-            if user is not None and user.is_active:
-                login(request, user)
-                return redirect('/')
+            # user.set_password(password) #this is the only way to change a password because of hashing
 
-        return render(request, self.template_name, { 'form': form })
+            #returns the User obejects if credintials are correct
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('/')
+
+
+        return render(request, self.template_name,{'form': form})
 
     
 def logoutView(request):
     logout(request)
     return redirect('/')
-
 

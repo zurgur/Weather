@@ -9,9 +9,6 @@ form p {
     margin: auto;
 }
 
-span.helptext {
-    display: none;
-}
 button {
     background-color: #4CAF50; /* Green */
     border: none;

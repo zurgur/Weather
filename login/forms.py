@@ -15,10 +15,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ['location']
 
-class LoginnForm(forms.ModelForm):
-
-    password = forms.CharField(widget=forms.PasswordInput)
-    
-    class Meta:
-        model = User
-        fields = ['username','password']
+class LoginnForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    fields = ['username', 'password']
