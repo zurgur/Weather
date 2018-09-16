@@ -42,6 +42,7 @@
     </tr> 
 </table>
 {% endif %}
+<a href="/history"><button class="forecast">Forcast</button></a>
 <hr>
 {% if request.user.is_authenticated %}
     <div class="signin">
@@ -54,4 +55,4 @@
         <p>login for daily updates</p>
         <a href="/login">login</a>
     </div>
-{% endif%}
+    {% endif%}

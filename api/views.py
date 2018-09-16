@@ -78,11 +78,12 @@ class HistoryView(View):
             forceasts = query_forcast(form['city'].value())
             x = []
             y = []
+
             for forecast in forceasts['list']:
                 x.append(forecast['dt'])
                 y.append(forecast['main']['temp'])
-
-            plot = figure(title="simple line example", x_axis_label='time', y_axis_label='temp')
+            
+            plot = figure(title="Forcast", x_axis_label='time', y_axis_label='temp', x_axis_type="datetime", width=800, height=350)
             plot.line(x, y, legend="Temp.", line_width=2)
 
             script, div = components(plot, CDN)

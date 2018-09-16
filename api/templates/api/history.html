@@ -11,12 +11,15 @@
 
 </head>
 <body>
-    <h1>Search for historic data</h1>
+    <h1>Search for 5 day forecast</h1>
     <form action="/history" method="POST">
         {% csrf_token %}
 
         {{ form }}
+        <button type="submit" value="OK">Show futer weather</button>
     </form>
+    <a href="/"><button class="forecast">Back</button></a>
+
 
     {{ div|safe }}
 
