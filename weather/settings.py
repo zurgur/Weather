@@ -26,7 +26,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-# bokeh stuff
+# bokeh stufff
 
 os.environ["BOKEH_SECRET_KEY"] = "QXir9qJlSNhDNHRafalMTIvrvb2MQ6cGKtwzQozlMcMi"
 os.environ["BOKEH_SIGN_SESSIONS"] = "True"
