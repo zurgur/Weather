@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "9q$srl#e!&jx34_d&fs8j8t-c4=ulb#qe1ppa9d5h$r+&5wvr)"
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = False
@@ -92,10 +92,9 @@ WSGI_APPLICATION = "weather.wsgi.application"
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
 
