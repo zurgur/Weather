@@ -21,6 +21,8 @@ import requests
 
 API_URL = ("http://api.openweathermap.org/data/2.5/weather?"
 "q={}&mode=json&units=metric&appid={}")
+FORECAST_URL = ("http://api.openweathermap.org/data/2.5/forecast?"
+"q={}&mode=json&units=metric&appid={}")
 DEFAULT_TIME = 'Europe/Madrid'
 TIME_FMT = '%H:%M:%S %Z%z'
 
@@ -52,34 +54,41 @@ def home(request):
 
     return render(request, 'api/search.html', {'form': form, 'userWeather': userWeather})
     
+def query_forcast(city):
+    try:
+        data = requests.get(FORECAST_URL.format(city, "44eeb6fe82501cf0500f489b7d0d44db")).json()
+    except Exception as exc:
+        print(exc)
+        data = None
+    return data
 class HistoryView(View):
     form = SearchForm
     template_name = 'api/history.html'
-    x= [1,3,5,7,9,11,13]
-    y= [1,2,3,4,5,6,7]
-    title = 'y = f(x)'
 
-    plot = figure(title= title , 
-        x_axis_label= 'X-Axis', 
-        y_axis_label= 'Y-Axis', 
-        plot_width =400,
-        plot_height =400)
-
-    #Store components 
-    script, div = components(plot)
-
-    
+      
     def get(self, request):
         form =self.form(None)
-        return render(request, self.template_name, { 'form': form, 'script' : self.script , 'div' : self.div })
+        return render(request, self.template_name, { 'form': form })
 
     def post(self, request):
         form = self.form(request.POST)
 
         if form.is_valid():
-            pass
+            
+            forceasts = query_forcast(form['city'].value())
+            x = []
+            y = []
+            for forecast in forceasts['list']:
+                x.append(forecast['dt'])
+                y.append(forecast['main']['temp'])
 
-        return render(request, self.template_name,{'form': form, 'script' : self.script , 'div' : self.div })
+            plot = figure(title="simple line example", x_axis_label='time', y_axis_label='temp')
+            plot.line(x, y, legend="Temp.", line_width=2)
+
+            script, div = components(plot, CDN)
+            return render(request, self.template_name,{'form': form, 'script' : script , 'div' : div })
+
+        return render(request, self.template_name,{'form': form })
 
 def query_api(city):
     try:
@@ -88,6 +97,7 @@ def query_api(city):
         print(exc)
         data = None
     return data
+
 
 def get_local_time(utstamp, country, city):
 
