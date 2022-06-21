@@ -50,7 +50,7 @@ Mako==1.0.7
 MarkupSafe==1.0
 matplotlib==2.1.1
 mccabe==0.6.1
-numpy==1.15.1
+numpy==1.22.0
 oauth==1.0.1
 oauthlib==2.0.6
 olefile==0.45.1
