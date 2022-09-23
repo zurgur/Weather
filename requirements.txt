@@ -63,7 +63,7 @@ Pillow==6.2.0
 pipenv==2018.7.1
 plainbox==0.25
 prompt-toolkit==1.0.15
-protobuf==3.0.0
+protobuf==3.18.3
 psycopg2==2.7.5
 pyasn1==0.4.2
 pycairo==1.16.2
