@@ -9,7 +9,7 @@ blinker==1.4
 bokeh==0.13.0
 Brlapi==0.6.6
 celery==3.1.26.post2
-certifi==2018.8.24
+certifi==2022.12.7
 chardet==3.0.4
 checkbox-support==0.22
 command-not-found==0.3
